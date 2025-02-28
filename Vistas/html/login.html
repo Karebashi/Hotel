@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/9540a64b47.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="index.html"><i class="fa-solid fa-water"></i> Hotel AquaMar Resort</a></h1>
+        </div>
+    </header>
+    <div class="login-container">
+        <h1>Inicio de Sesión</h1>
+        <form action="/login" method="post">
+            <div class="input-group">
+                <label for="username"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+                <input type="text" id="username" name="username" placeholder="Introduce tu correo electrónico" required>
+            </div>
+            <div class="input-group">
+                <label for="password"><i class="fa-solid fa-key"></i> Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="Introduce tu contraseña" required>
+            </div>
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+        <div class="extra-links">
+            <a href="password.html">¿Olvidaste tu contraseña?</a>
+            <a href="register.html">Si no tienes cuenta, regístrate aquí</a>
+        </div>
+    </div>
+</body>
+</html>
