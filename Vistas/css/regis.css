@@ -63,6 +63,7 @@ header h1 a:hover {
 }
 
 .input-group {
+    position: relative;
     margin-bottom: 15px;
     text-align: left;
 }
@@ -118,3 +119,4 @@ button:hover {
     text-decoration: underline;
     color: #003366;
 }
+
