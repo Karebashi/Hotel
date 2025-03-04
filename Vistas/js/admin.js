@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
             descripcion: 'Un exclusivo bungalow de lujo sobre la arena, con acceso directo a la playa, piscina privada, terraza con hamacas, cocina equipada, baño de mármol y servicio de chef privado.'
         }
     };
-
     document.getElementById('tipo').addEventListener('change', function() {
         const tipo = this.value;
         if (tipo && habitaciones[tipo]) {
