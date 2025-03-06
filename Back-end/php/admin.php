@@ -5,6 +5,11 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
     header("Location: ../../Vistas/html/index.html"); 
     exit();
 }
+
+include 'conexion_be.php';
+
+$query = "SELECT id, nombre, descripcion, precio, imagen FROM habitaciones";
+$resultado = mysqli_query($conexion, $query);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,7 +31,6 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
                     <li><a href="#gestion-habitaciones">Gestión de Habitaciones</a></li>
                     <li><a href="#panel-reservas">Panel de Reservas</a></li>
                     <li><a href="logout.php">Cerrar sesión</a></li>
-
                 </ul>
             </nav>
         </div>
@@ -34,7 +38,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
 
     <section id="gestion-habitaciones" class="container">
         <h2>Gestión de Habitaciones</h2>
-        <form id="form-habitaciones">
+        <form id="form-habitaciones" action="guardar_habitacion.php" method="POST" enctype="multipart/form-data">
             <label for="tipo">Tipo de Habitación:</label>
             <select id="tipo" name="tipo" required>
                 <option value="">Seleccione un tipo de habitación</option>
@@ -57,7 +61,21 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
             <button type="submit">Agregar Habitación</button>
         </form>
         <div id="lista-habitaciones">
-            <!-- Aquí se mostrarán las habitaciones -->
+            <h2>Habitaciones Existentes</h2>
+            <div class="row">
+                <?php while ($habitacion = mysqli_fetch_assoc($resultado)): ?>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <img src="../../images/<?php echo explode(',', $habitacion['imagen'])[0]; ?>" class="card-img-top" alt="<?php echo $habitacion['nombre']; ?>">
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $habitacion['nombre']; ?></h5>
+                                <p class="card-text"><?php echo $habitacion['descripcion']; ?></p>
+                                <p class="card-text">Precio: $<?php echo $habitacion['precio']; ?></p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            </div>
         </div>
     </section>
 
@@ -75,3 +93,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
     <script src="/js/admin.js"></script>
 </body>
 </html>
+
+<?php
+mysqli_close($conexion);
+?>

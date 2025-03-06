@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             descripcion: 'Un exclusivo bungalow de lujo sobre la arena, con acceso directo a la playa, piscina privada, terraza con hamacas, cocina equipada, baño de mármol y servicio de chef privado.'
         }
     };
+
     document.getElementById('tipo').addEventListener('change', function() {
         const tipo = this.value;
         if (tipo && habitaciones[tipo]) {
@@ -39,40 +40,21 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const tipo = document.getElementById('tipo').value;
-        const precio = document.getElementById('precio').value;
-        const disponibilidad = document.getElementById('disponibilidad').value;
-        const descripcion = document.getElementById('descripcion').value;
-        const imagenes = document.getElementById('imagenes').files;
+        const formData = new FormData(form); // Capturar los datos del formulario
 
-        const habitacionDiv = document.createElement('div');
-        habitacionDiv.innerHTML = `
-            <span>Tipo: ${tipo}, Precio: ${precio}, Disponibilidad: ${disponibilidad}</span>
-            <p>${descripcion}</p>
-        `;
-
-        Array.from(imagenes).forEach(imagen => {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = document.createElement('img');
-                img.src = event.target.result;
-                img.alt = `Imagen de ${tipo}`;
-                habitacionDiv.appendChild(img);
-            };
-            reader.readAsDataURL(imagen);
+        fetch("guardar_habitacion.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            alert("Habitación agregada correctamente.");
+            location.reload(); // Recargar la página para mostrar la nueva habitación
+        })
+        .catch(error => {
+            console.error("Error al guardar la habitación:", error);
         });
-
-        const eliminarBtn = document.createElement('button');
-        eliminarBtn.textContent = 'Eliminar';
-        eliminarBtn.classList.add('eliminar');
-        eliminarBtn.addEventListener('click', () => {
-            listaHabitaciones.removeChild(habitacionDiv);
-        });
-        habitacionDiv.appendChild(eliminarBtn);
-
-        listaHabitaciones.appendChild(habitacionDiv);
-
-        form.reset();
     });
 
     // Simulación de datos de reservas
@@ -89,3 +71,4 @@ document.addEventListener('DOMContentLoaded', () => {
         listaReservas.appendChild(reservaDiv);
     });
 });
+

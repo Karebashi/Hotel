@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitaciones - Hotel AquaMar Resort</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://kit.fontawesome.com/9540a64b47.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fa-solid fa-water"></i> Hotel AquaMar Resort </h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="about.html">Nosotros</a></li>
+                    <li><a href="services.html">Servicios</a></li>
+                    <li><a href="habitaciones.html">Habitaciones</a></li>
+                    <li><a href="contact.html">Contacto</a></li>
+                    <li><a href="login.html">Iniciar Sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="habitaciones">
+        <div class="container">
+            <h2>Nuestras Habitaciones</h2>
+            <div id="habitaciones-lista" class="habitaciones-grid">
+                <!-- Aquí se cargarán las habitaciones dinámicamente -->
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('../Back-end/php/habitaciones.php')
+                .then(response => response.json())
+                .then(data => {
+                    const habitacionesLista = document.getElementById("habitaciones-lista");
+                    data.forEach(habitacion => {
+                        const habitacionDiv = document.createElement("div");
+                        habitacionDiv.classList.add("habitacion");
+                        habitacionDiv.innerHTML = `
+                            <img src="../images/${habitacion.imagen}" alt="${habitacion.nombre}">
+                            <h3>${habitacion.nombre}</h3>
+                            <p>${habitacion.descripcion}</p>
+                            <p><strong>Precio: </strong>$${habitacion.precio} por noche</p>
+                        `;
+                        habitacionesLista.appendChild(habitacionDiv);
+                    });
+                })
+                .catch(error => console.error("Error al cargar las habitaciones:", error));
+        });
+    </script>
+</body>
+</html>
