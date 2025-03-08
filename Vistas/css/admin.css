@@ -274,3 +274,29 @@ footer {
     border-radius: 5px;
     margin-bottom: 10px;
 }
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #004aad;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #003b8e;
+}
+
+.btn-danger {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #e60000;
+}
