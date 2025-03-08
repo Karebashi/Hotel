@@ -79,7 +79,7 @@ section {
 }
 
 .parallax {
-    background-image: url('../../images/beach.png');
+    background-image: url('../../images/hotel/beach.png');
     height: 500px;
     background-attachment: fixed;
     background-position: center;

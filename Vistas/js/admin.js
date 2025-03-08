@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const habitaciones = {
         estandar: {
             precio: 150,
-            descripcion: 'Una habitación acogedora con vista al jardín, equipada con una cama Queen, aire acondicionado, Wi-Fi, TV de pantalla plana y minibar. Ideal para quienes buscan comodidad a un precio accesible.'
+            descripcion: 'hola'
         },
         deluxe: {
             precio: 220,

@@ -1,6 +1,3 @@
-<?php
-include 'conexion_be.php';
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,7 +10,7 @@ include 'conexion_be.php';
     <script src="https://kit.fontawesome.com/9540a64b47.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
     <header>
@@ -35,39 +32,63 @@ include 'conexion_be.php';
     <section class="habitaciones">
         <div class="container">
             <h2>Nuestras Habitaciones</h2>
-            <h3>Para poder reservar habitaciones necesitas tener una cuenta creada.</h3>
+            <p>Para poder reservar habitaciones necesitas tener una cuenta creada.</p>
             <div id="habitaciones-lista" class="row">
                 <!-- Aquí se cargarán las habitaciones dinámicamente -->
             </div>
         </div>
     </section>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('habitaciones.php')
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Datos recibidos:", data); // Para depuración
-                    const habitacionesLista = document.getElementById("habitaciones-lista");
 
-                    data.forEach(habitacion => {
-                        const habitacionDiv = document.createElement("div");
-                        habitacionDiv.classList.add("col-md-4", "mb-4");
-                        habitacionDiv.innerHTML = `
-                            <div class="card">
-                                <img src="../images/${habitacion.imagen}" class="card-img-top" alt="${habitacion.nombre}">
-                                <div class="card-body">
-                                    <h5 class="card-title">${habitacion.nombre}</h5>
-                                    <p class="card-text">${habitacion.descripcion}</p>
-                                    <p><strong>Precio:</strong> $${habitacion.precio} por noche</p>
-                                </div>
-                            </div>
-                        `;
-                        habitacionesLista.appendChild(habitacionDiv);
-                    });
-                })
-                .catch(error => console.error("Error al cargar las habitaciones:", error));
-        });
+    <script>
+        // Simulación de datos de sesión
+        const session = {
+            isLoggedIn: true, // Cambia esto a false para probar cuando no está logueado
+            role: 2 // Cambia esto a otro número para probar diferentes roles
+        };
+
+        // Simulación de datos de habitaciones
+        const habitaciones = [
+            { id: 1, nombre: 'Habitación Sencilla 🌿', descripcion: "Una elegante habitación con cama King, diseñada para ofrecer comodidad y sofisticación. Está equipada con aire acondicionado, Wi-Fi, TV de pantalla plana, minibar y servicio de desayuno en la habitación. Perfecta para viajeros de negocios o parejas que buscan una estancia placentera.", imagen: '../../images/habitaciones/sencilla.jpg', restricciones: { capacidad: 'Mínimo 1 persona, máximo 2 personas', niños: 'Se permiten niños, pero no se dispone de camas adicionales', mascotas: 'No se permiten mascotas', fumadores: 'No está permitido fumar en la habitación' } },
+            
+            
+            
+            { id: 2, nombre: 'Habitación Doble con Cama Adicional 🌅', descripcion: "Habitación cómoda y luminosa con una cama doble y una individual, ideal para hasta cuatro personas. Equipada con aire acondicionado, ropa de cama de calidad y decoración elegante con detalles florales.", imagen: '../../images/habitaciones/doble.jpg', restricciones: { capacidad: 'Mínimo 2 personas    , máximo 4 personas', niños: 'Se permiten niños, pero no se dispone de camas adicionales', mascotas: 'No se permiten mascotas', fumadores: 'No está permitido fumar en la habitación' } },
+            
+            
+            { id: 3, nombre: 'Habitación Familiar Deluxe 🏝️', descripcion: "Amplia y cómoda habitación ideal para familias o grupos. Cuenta con dos camas dobles y dos individuales, con capacidad para hasta seis personas. Equipada con aire acondicionado, ropa de cama premium y grandes ventanales que brindan luz natural. Su decoración elegante y detalles florales crean un ambiente acogedor.", imagen: '../../images/habitaciones/familiar.jpg', restricciones: { capacidad: 'Mínimo 4 personas, máximo 6 personas', niños: 'Se permiten niños, pero no se dispone de camas adicionales', mascotas: 'No se permiten mascotas', fumadores: 'No está permitido fumar en la habitación' } },
+
+
+            { id: 4, nombre: 'Habitación Doble Confort 🌟', descripcion: "Moderna y acogedora, ideal para parejas o viajeros. Cuenta con una cama doble, escritorio elegante y una pantalla plana. La luz natural fluye a través de amplias ventanas con cortinas traslúcidas, brindando un ambiente cálido y relajante. Equipada con aire acondicionado y ropa de cama de alta calidad.", imagen: '../../images/habitaciones/comfort.jpg', restricciones: { capacidad: 'Mínimo 1 persona, máximo 2 personas', niños: 'No se permiten niños', mascotas: 'No se permiten mascotas', fumadores: 'No está permitido fumar en la habitación' } },
+        ];
+
+        function cargarHabitaciones() {
+            const lista = document.getElementById('habitaciones-lista');
+            habitaciones.forEach(habitacion => {
+                const habitacionDiv = document.createElement('div');
+                habitacionDiv.className = 'col-md-4';
+                habitacionDiv.innerHTML = `
+                    <div class="card mb-4">
+                        <img src="${habitacion.imagen}" class="card-img-top" alt="${habitacion.nombre}">
+                        <div class="card-body">
+                            <h5 class="card-title">${habitacion.nombre}</h5>
+                            <p class="card-text">${habitacion.descripcion}</p>
+                            ${habitacion.restricciones ? `
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-user"></i> ${habitacion.restricciones.capacidad}</li>
+                                    <li><i class="fas fa-child"></i> ${habitacion.restricciones.niños}</li>
+                                    <li><i class="fas fa-paw"></i> ${habitacion.restricciones.mascotas}</li>
+                                    <li><i class="fas fa-smoking-ban"></i> ${habitacion.restricciones.fumadores}</li>
+                                </ul>
+                            ` : ''}
+                            ${session.isLoggedIn && session.role === 2 ? `<a href="#" class="btn btn-primary">Reservar</a>` : ''}
+                        </div>
+                    </div>
+                `;
+                lista.appendChild(habitacionDiv);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', cargarHabitaciones);
     </script>
 </body>
 </html>

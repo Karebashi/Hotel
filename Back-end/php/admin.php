@@ -42,11 +42,10 @@ $resultado = mysqli_query($conexion, $query);
             <label for="tipo">Tipo de Habitación:</label>
             <select id="tipo" name="tipo" required>
                 <option value="">Seleccione un tipo de habitación</option>
-                <option value="estandar">Habitación Estándar 🌿</option>
+                <option value="estandar">Habitación Ejecutiva 🌿</option>
                 <option value="deluxe">Habitación Deluxe con Vista al Mar 🌅</option>
                 <option value="junior">Suite Junior 🏝️</option>
                 <option value="presidencial">Suite Presidencial 🌟</option>
-                <option value="bungalow">Bungalow Privado Frente al Mar 🏖️</option>
             </select>
             
             <label for="precio">Precio:</label>
@@ -58,7 +57,7 @@ $resultado = mysqli_query($conexion, $query);
             <label for="imagenes">Imágenes:</label>
             <input type="file" id="imagenes" name="imagenes" accept="image/*" multiple required>
             
-            <button type="submit">Agregar Habitación</button>
+            <button type="submit" class="btn btn-primary">Agregar Habitación</button>
         </form>
         <div id="lista-habitaciones">
             <h2>Habitaciones Existentes</h2>
@@ -66,11 +65,13 @@ $resultado = mysqli_query($conexion, $query);
                 <?php while ($habitacion = mysqli_fetch_assoc($resultado)): ?>
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <img src="../../images/<?php echo explode(',', $habitacion['imagen'])[0]; ?>" class="card-img-top" alt="<?php echo $habitacion['nombre']; ?>">
+                            <img src="../../images/<?php echo explode(',', $habitacion['imagen'])[0]; ?>" class="card-img-top">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $habitacion['nombre']; ?></h5>
                                 <p class="card-text"><?php echo $habitacion['descripcion']; ?></p>
                                 <p class="card-text">Precio: $<?php echo $habitacion['precio']; ?></p>
+                                <button class="btn btn-primary" onclick="editarHabitacion(<?php echo $habitacion['id']; ?>)">Editar</button>
+                                <button class="btn btn-danger" onclick="eliminarHabitacion(<?php echo $habitacion['id']; ?>)">Eliminar</button>
                             </div>
                         </div>
                     </div>
@@ -90,7 +91,76 @@ $resultado = mysqli_query($conexion, $query);
         <p>Panel de Administración <i class="fa-solid fa-water"></i> Hotel AquaMar Resort</p>
     </footer>
 
-    <script src="/js/admin.js"></script>
+    <!-- Formulario de edición de habitación -->
+    <div id="form-editar-habitacion" style="display: none;">
+        <h2>Editar Habitación</h2>
+        <form id="editar-habitacion" action="editar_habitacion.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" id="editar-id" name="id">
+            <label for="editar-tipo">Tipo de Habitación:</label>
+            <select id="editar-tipo" name="tipo" required>
+                <option value="">Seleccione un tipo de habitación</option>
+                <option value="estandar">Habitación Estándar 🌿</option>
+                <option value="deluxe">Habitación Deluxe con Vista al Mar 🌅</option>
+                <option value="junior">Suite Junior 🏝️</option>
+                <option value="presidencial">Suite Presidencial 🌟</option>
+                <option value="bungalow">Bungalow Privado Frente al Mar 🏖️</option>
+            </select>
+            
+            <label for="editar-precio">Precio:</label>
+            <input type="number" id="editar-precio" name="precio" required>
+
+            <label for="editar-descripcion">Descripción:</label>
+            <textarea id="editar-descripcion" name="descripcion" required></textarea>
+
+            <label for="editar-imagenes">Imágenes:</label>
+            <input type="file" id="editar-imagenes" name="imagenes" accept="image/*" multiple>
+            
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <button type="button" class="btn btn-secondary" onclick="ocultarFormularioEdicion()">Cancelar</button>
+        </form>
+    </div>
+
+    <script>
+        function editarHabitacion(id) {
+            // Lógica para mostrar el formulario de edición con los datos de la habitación
+            fetch(`obtener_habitacion.php?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('editar-id').value = data.id;
+                    document.getElementById('editar-tipo').value = data.nombre;
+                    document.getElementById('editar-precio').value = data.precio;
+                    document.getElementById('editar-descripcion').value = data.descripcion;
+                    document.getElementById('form-editar-habitacion').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error al obtener los datos de la habitación:', error);
+                });
+        }
+
+        function ocultarFormularioEdicion() {
+            document.getElementById('form-editar-habitacion').style.display = 'none';
+        }
+
+        function eliminarHabitacion(id) {
+            if (confirm("¿Estás seguro de que deseas eliminar esta habitación?")) {
+                fetch("eliminar_habitacion.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: `id=${id}`
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error("Error al eliminar la habitación:", error);
+                });
+            }
+        }
+    </script>
 </body>
 </html>
 
