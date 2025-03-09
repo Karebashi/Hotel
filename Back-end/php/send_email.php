@@ -3,12 +3,19 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require '../../vendor/autoload.php';
+require 'conexion_be.php'; // Include the database connection
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = htmlspecialchars($_POST['name']);
     $email = htmlspecialchars($_POST['email']);
     $subject = htmlspecialchars($_POST['subject']);
     $message = htmlspecialchars($_POST['message']);
+
+    // Insert the data into the database
+    $stmt = $conexion->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $name, $email, $subject, $message);
+    $stmt->execute();
+    $stmt->close();
 
     $mail = new PHPMailer(true);
 
