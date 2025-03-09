@@ -9,7 +9,7 @@ $clientName = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel AquaMar Resort</title>
-    <link rel="stylesheet" href="../../Vistas/css/styles.css">
+    <link rel="stylesheet" href="../../Vistas/css/habitaciones.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/9540a64b47.js" crossorigin="anonymous"></script>
@@ -63,7 +63,7 @@ $clientName = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
                                 <p class="card-text"><?php echo $habitacion['descripcion']; ?></p>
                                 <p class="card-text">Precio: $<?php echo $habitacion['precio']; ?></p>
                                 <?php if ($isClient): ?>
-                                    <a href="#" class="btn btn-primary">Reservar</a>
+                                    <button class="btn btn-primary" onclick="mostrarFormularioReserva(<?php echo $habitacion['id']; ?>, '<?php echo $habitacion['nombre']; ?>', '<?php echo $habitacion['descripcion']; ?>', '<?php echo base64_encode($habitacion['imagen']); ?>', <?php echo $habitacion['precio']; ?>)">Reservar</button>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -72,10 +72,60 @@ $clientName = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
             </div>
         </div>
     </section>
+
+    <div id="formulario-reserva" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarFormularioReserva()">&times;</span>
+            <h2>Reservar Habitación</h2>
+            <div id="vista-previa-habitacion" class="card mb-4">
+                <img id="vista-previa-imagen" class="card-img-top" alt="Vista previa de la habitación">
+                <div class="card-body">
+                    <h5 id="vista-previa-nombre" class="card-title"></h5>
+                    <p id="vista-previa-descripcion" class="card-text"></p>
+                    <p id="vista-previa-precio" class="card-text"></p>
+                </div>
+            </div>
+            <div id="sub-habitaciones" class="sub-habitaciones">
+                <?php
+                $subQuery = "SELECT id, habitacion_id, estado FROM sub_habitaciones WHERE habitacion_id = ?";
+                $stmt = $conexion->prepare($subQuery);
+                $stmt->bind_param("i", $habitacion['id']);
+                $stmt->execute();
+                $subResult = $stmt->get_result();
+
+                while ($subHabitacion = $subResult->fetch_assoc()): ?>
+                    <div class="sub-habitacion <?php echo $subHabitacion['estado'] == 'ocupada' ? 'reservada' : ''; ?>" onclick="seleccionarSubHabitacion(this)">
+                        <span>Habitación <?php echo $subHabitacion['id']; ?></span>
+                        <span class="estado"><?php echo $subHabitacion['estado'] == 'ocupada' ? 'Ocupada' : 'Disponible'; ?></span>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+            <form id="form-reserva" action="../../Back-end/php/reservar_habitacion.php" method="POST">
+                <input type="hidden" id="habitacion-id" name="habitacion_id">
+                <input type="hidden" id="sub-habitacion-id" name="sub_habitacion_id">
+                <div class="form-group">
+                    <label for="fecha-inicio">Fecha de Inicio:</label>
+                    <input type="date" id="fecha-inicio" name="fecha_inicio" required>
+                </div>
+                <div class="form-group">
+                    <label for="fecha-fin">Fecha de Fin:</label>
+                    <input type="date" id="fecha-fin" name="fecha_fin" required>
+                </div>
+                <div class="form-group">
+                    <label for="cantidad-personas">Cantidad de Personas:</label>
+                    <input type="number" id="cantidad-personas" name="cantidad_personas" min="1" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Reservar</button>
+            </form>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <p>&copy; 2025 Hotel AquaMar Resort. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <script src="../../Vistas/js/habitaciones.js"></script>
 </body>
 </html>

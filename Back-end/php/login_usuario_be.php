@@ -12,7 +12,7 @@ $resultado = mysqli_query($conexion, $query);
 if (mysqli_num_rows($resultado) > 0) {
     $usuario = mysqli_fetch_assoc($resultado);
 
-    $_SESSION['id_usuario'] = $usuario['id'];
+    $_SESSION['id'] = $usuario['id']; // Cambiado de 'id_usuario' a 'id'
     $_SESSION['nombre'] = $usuario['nombre_completo'];
     $_SESSION['email'] = $usuario['email'];
     $_SESSION['rol'] = $usuario['rol'];
@@ -26,13 +26,13 @@ if (mysqli_num_rows($resultado) > 0) {
     } else {
         echo '<script>
                 alert("Rol no válido.");
-                window.location = "../../Vistas/html/login.html";
+                window.location = "../../Vistas/html/login.php
             </script>';
     }
 } else {
     echo '<script>
             alert("Correo o contraseña incorrectos");
-            window.location = "../../Vistas/html/login.html";
+            window.location = "../../Vistas/html/login.php
         </script>';
 }
 
