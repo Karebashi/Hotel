@@ -2,10 +2,19 @@
 include 'conexion_be.php';
 
 $id = $_POST['id'];
+$nombre = $_POST['nombre'];
+$precio = $_POST['precio'];
+$descripcion = $_POST['descripcion'];
+$imagenes = isset($_FILES['imagenes']) ? implode(',', $_FILES['imagenes']['name']) : '';
 
-$query = "DELETE FROM habitaciones WHERE id='$id'";
+$query = "UPDATE habitaciones SET nombre='$nombre', descripcion='$descripcion', precio='$precio'";
+if ($imagenes) {
+    $query .= ", imagen='$imagenes'";
+}
+$query .= " WHERE id='$id'";
+
 if (mysqli_query($conexion, $query)) {
-    echo "Habitación eliminada correctamente.";
+    echo "Habitación actualizada correctamente.";
 } else {
     echo "Error: " . $query . "<br>" . mysqli_error($conexion);
 }

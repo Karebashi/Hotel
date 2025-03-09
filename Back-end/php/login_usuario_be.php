@@ -26,7 +26,7 @@ if (mysqli_num_rows($resultado) > 0) {
         echo '<script>
                 alert("Rol no válido.");
                 window.location = "../../Vistas/html/login.html";
-              </script>';
+            </script>';
     }
 } else {
     echo '<script>

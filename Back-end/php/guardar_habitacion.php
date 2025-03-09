@@ -1,7 +1,7 @@
 <?php
 include 'conexion_be.php';
 
-$nombre = $_POST['tipo']; 
+$nombre = $_POST['nombre']; 
 $precio = $_POST['precio'];
 $descripcion = $_POST['descripcion'];
 $imagenes = $_FILES['imagenes'];

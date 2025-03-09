@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 
@@ -42,12 +43,15 @@ $resultado = mysqli_query($conexion, $query);
             <label for="tipo">Tipo de Habitación:</label>
             <select id="tipo" name="tipo" required>
                 <option value="">Seleccione un tipo de habitación</option>
-                <option value="estandar">Habitación Ejecutiva 🌿</option>
-                <option value="deluxe">Habitación Deluxe con Vista al Mar 🌅</option>
-                <option value="junior">Suite Junior 🏝️</option>
-                <option value="presidencial">Suite Presidencial 🌟</option>
+                <option value="sencilla">Habitación Sencilla 🌿</option>
+                <option value="doble">Habitación Doble con Cama Adicional 🌅</option>
+                <option value="deluxe">Habitación Familiar Deluxe 🏝️</option>
+                <option value="confort">Habitación Doble Confort 🌟</option>
             </select>
             
+            <label for="nombre">nombre:</label>
+            <input type="nombre" id="nombre" name="nombre" required>
+
             <label for="precio">Precio:</label>
             <input type="number" id="precio" name="precio" required>
 
@@ -98,12 +102,11 @@ $resultado = mysqli_query($conexion, $query);
             <input type="hidden" id="editar-id" name="id">
             <label for="editar-tipo">Tipo de Habitación:</label>
             <select id="editar-tipo" name="tipo" required>
-                <option value="">Seleccione un tipo de habitación</option>
-                <option value="estandar">Habitación Estándar 🌿</option>
-                <option value="deluxe">Habitación Deluxe con Vista al Mar 🌅</option>
-                <option value="junior">Suite Junior 🏝️</option>
-                <option value="presidencial">Suite Presidencial 🌟</option>
-                <option value="bungalow">Bungalow Privado Frente al Mar 🏖️</option>
+            <option value="">Seleccione un tipo de habitación</option>
+                <option value="sencilla">Habitación Sencilla 🌿</option>
+                <option value="doble">Habitación Doble con Cama Adicional 🌅</option>
+                <option value="deluxe">Habitación Familiar Deluxe 🏝️</option>
+                <option value="confort">Habitación Doble Confort 🌟</option>
             </select>
             
             <label for="editar-precio">Precio:</label>
