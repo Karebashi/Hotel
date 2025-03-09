@@ -6,13 +6,14 @@ $email = $_POST['email'];
 $contrasena = $_POST['contrasena'];
 $contrasena = hash('sha512', $contrasena);
 
-$query = "SELECT email, rol FROM usuarios WHERE email = '$email' AND contrasena = '$contrasena'";
+$query = "SELECT id, nombre_completo, email, rol FROM usuarios WHERE email = '$email' AND contrasena = '$contrasena'";
 $resultado = mysqli_query($conexion, $query);
 
 if (mysqli_num_rows($resultado) > 0) {
     $usuario = mysqli_fetch_assoc($resultado);
 
-    $_SESSION['id_usuario'] = $usuario['id_usuario'];
+    $_SESSION['id_usuario'] = $usuario['id'];
+    $_SESSION['nombre'] = $usuario['nombre_completo'];
     $_SESSION['email'] = $usuario['email'];
     $_SESSION['rol'] = $usuario['rol'];
 

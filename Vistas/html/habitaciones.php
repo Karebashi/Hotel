@@ -1,6 +1,7 @@
 <?php
 session_start();
 $isClient = isset($_SESSION['rol']) && $_SESSION['rol'] == 2;
+$clientName = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -40,7 +41,12 @@ $isClient = isset($_SESSION['rol']) && $_SESSION['rol'] == 2;
     <section class="habitaciones">
         <div class="container">
             <h2>Nuestras Habitaciones</h2>
-            <p>Para poder reservar habitaciones necesitas tener una cuenta creada.</p>
+            <?php if ($isClient): ?>
+                <h4>Bienvenido, <?php echo htmlspecialchars($clientName); ?>. </h4>
+                <p>Puedes reservar habitaciones a continuación.</p>
+            <?php else: ?>
+                <p>Para poder reservar habitaciones necesitas tener una cuenta creada.</p>
+            <?php endif; ?>
             <div id="habitaciones-lista" class="row">
                 <?php
                 include '../../Back-end/php/conexion_be.php';
@@ -56,7 +62,7 @@ $isClient = isset($_SESSION['rol']) && $_SESSION['rol'] == 2;
                                 <h5 class="card-title"><?php echo $habitacion['nombre']; ?></h5>
                                 <p class="card-text"><?php echo $habitacion['descripcion']; ?></p>
                                 <p class="card-text">Precio: $<?php echo $habitacion['precio']; ?></p>
-                                <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 2): ?>
+                                <?php if ($isClient): ?>
                                     <a href="#" class="btn btn-primary">Reservar</a>
                                 <?php endif; ?>
                             </div>
