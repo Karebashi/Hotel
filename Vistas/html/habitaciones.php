@@ -42,7 +42,7 @@ $clientName = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
         <div class="container">
             <h2>Nuestras Habitaciones</h2>
             <?php if ($isClient): ?>
-                <h4>Bienvenido, <?php echo htmlspecialchars($clientName); ?>. </h4>
+                <h4>Hola, <?php echo htmlspecialchars($clientName); ?>. </h4>
                 <p>Puedes reservar habitaciones a continuación.</p>
             <?php else: ?>
                 <p>Para poder reservar habitaciones necesitas tener una cuenta creada.</p>
