@@ -152,3 +152,10 @@ nav ul li a:hover::after {
 .sub-habitacion.reservada .estado {
     color: white;
 }
+
+footer {
+    background-color: #004aad;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
