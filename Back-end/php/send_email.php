@@ -67,14 +67,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $mail->send();
 
-        header('Location: ../../Vistas/html/contact.html?status=success');
+        header('Location: ../../Vistas/html/contact.php?status=success');
         exit();
     } catch (Exception $e) {
-        header('Location: ../../Vistas/html/contact.html?status=error');
+        header('Location: ../../Vistas/html/contact.php?status=error');
         exit();
     }
 } else {
-    header('Location: ../../Vistas/html/contact.html?status=invalid');
+    header('Location: ../../Vistas/html/contact.php?status=invalid');
     exit();
 }
 ?>
