@@ -5,6 +5,31 @@ function mostrarFormularioReserva(habitacionId, nombre, descripcion, imagen, pre
     document.getElementById('vista-previa-imagen').src = 'data:image/jpeg;base64,' + imagen;
     document.getElementById('vista-previa-precio').innerText = 'Precio: $' + precio;
     document.getElementById('formulario-reserva').style.display = 'block';
+
+    // Cargar sub-habitaciones
+    fetch(`../../Back-end/php/obtener_sub_habitaciones.php?habitacion_id=${habitacionId}`)
+        .then(response => response.json())
+        .then(data => {
+            const subHabitacionesDiv = document.getElementById('sub-habitaciones');
+            subHabitacionesDiv.innerHTML = '';
+            data.forEach(subHabitacion => {
+                const subHabitacionDiv = document.createElement('div');
+                subHabitacionDiv.classList.add('sub-habitacion');
+                if (subHabitacion.estado === 'ocupada') {
+                    subHabitacionDiv.classList.add('ocupada');
+                }
+                subHabitacionDiv.setAttribute('data-id', subHabitacion.id);
+                subHabitacionDiv.innerHTML = `
+                    <span>Habitación ${subHabitacion.id}</span>
+                    <span class="estado">${subHabitacion.estado === 'ocupada' ? 'Ocupada' : 'Disponible'}</span>
+                `;
+                subHabitacionDiv.addEventListener('click', () => seleccionarSubHabitacion(subHabitacionDiv));
+                subHabitacionesDiv.appendChild(subHabitacionDiv);
+            });
+        })
+        .catch(error => {
+            console.error('Error al cargar las sub-habitaciones:', error);
+        });
 }
 
 function cerrarFormularioReserva() {
@@ -17,7 +42,7 @@ function seleccionarSubHabitacion(element) {
         subHabitacion.classList.remove('reservada');
     });
     element.classList.add('reservada');
-    document.getElementById('sub-habitacion-id').value = element.querySelector('span').innerText.split(' ')[1];
+    document.getElementById('sub-habitacion-id').value = element.getAttribute('data-id');
 }
 
 document.addEventListener('DOMContentLoaded', () => {

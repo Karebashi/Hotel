@@ -43,6 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button class="btn btn-eliminar" onclick="eliminarSubHabitacion(${subHabitacionId})">Eliminar</button>
                 `;
                 document.querySelector(`.habitacion[data-id="${habitacionId}"] .sub-habitaciones`).appendChild(subHabitacionDiv);
+
+                // Attach event listener to the new delete button
+                subHabitacionDiv.querySelector('.btn-eliminar').addEventListener('click', function() {
+                    eliminarSubHabitacion(subHabitacionId);
+                });
             } else {
                 alert(data);
             }

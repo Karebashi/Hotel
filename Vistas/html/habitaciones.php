@@ -86,19 +86,7 @@ $clientName = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
                 </div>
             </div>
             <div id="sub-habitaciones" class="sub-habitaciones">
-                <?php
-                $subQuery = "SELECT id, habitacion_id, estado FROM sub_habitaciones WHERE habitacion_id = ?";
-                $stmt = $conexion->prepare($subQuery);
-                $stmt->bind_param("i", $habitacion['id']);
-                $stmt->execute();
-                $subResult = $stmt->get_result();
-
-                while ($subHabitacion = $subResult->fetch_assoc()): ?>
-                    <div class="sub-habitacion <?php echo $subHabitacion['estado'] == 'ocupada' ? 'reservada' : ''; ?>" onclick="seleccionarSubHabitacion(this)">
-                        <span>Habitación <?php echo $subHabitacion['id']; ?></span>
-                        <span class="estado"><?php echo $subHabitacion['estado'] == 'ocupada' ? 'Ocupada' : 'Disponible'; ?></span>
-                    </div>
-                <?php endwhile; ?>
+                <!-- Aquí se cargarán las sub-habitaciones dinámicamente -->
             </div>
             <form id="form-reserva" action="../../Back-end/php/reservar_habitacion.php" method="POST">
                 <input type="hidden" id="habitacion-id" name="habitacion_id">

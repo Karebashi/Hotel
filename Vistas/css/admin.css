@@ -278,6 +278,24 @@ section {
     color: green;
 }
 
+.sub-habitacion.ocupada {
+    background-color: red;
+    color: white;
+}
+
+.sub-habitacion.ocupada .estado {
+    color: white;
+}
+
+.sub-habitacion.reservada {
+    background-color: green;
+    color: white;
+}
+
+.sub-habitacion.reservada .estado {
+    color: white;
+}
+
 /* Estilos para el formulario de agregar sub-habitaciones */
 .form-agregar-sub-habitacion {
     background-color: #fff;
@@ -337,6 +355,63 @@ section {
 
 .btn-eliminar:hover {
     background-color: #e60000;
+}
+
+#lista-reservas table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#lista-reservas th, #lista-reservas td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+#lista-reservas th {
+    background-color: #004aad;
+    color: white;
+}
+
+#lista-reservas tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#lista-reservas tr:hover {
+    background-color: #ddd;
+}
+
+#form-busqueda-reservas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#form-busqueda-reservas label {
+    font-weight: bold;
+}
+
+#form-busqueda-reservas input,
+#form-busqueda-reservas select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#form-busqueda-reservas button {
+    padding: 10px 20px;
+    background-color: #004aad;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#form-busqueda-reservas button:hover {
+    background-color: #003b8e;
 }
 
 footer {

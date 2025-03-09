@@ -32,6 +32,22 @@ $resultado_contact = mysqli_query($conexion, $query_contact);
 if (!$resultado_contact) {
     die("Error en la consulta de mensajes de contacto: " . mysqli_error($conexion));
 }
+
+// Obtener reservas con filtro por cliente
+$search_cliente = isset($_GET['search_cliente']) ? $_GET['search_cliente'] : '';
+
+$query_reservas = "SELECT r.id, u.nombre_completo AS cliente, h.nombre AS habitacion, s.id AS sub_habitacion, r.cantidad_personas, r.fecha_inicio, r.fecha_fin 
+                   FROM reservas r 
+                   JOIN usuarios u ON r.usuario_id = u.id 
+                   JOIN habitaciones h ON r.habitacion_id = h.id 
+                   JOIN sub_habitaciones s ON r.sub_habitacion_id = s.id 
+                   WHERE u.nombre_completo LIKE '%$search_cliente%'";
+
+$resultado_reservas = mysqli_query($conexion, $query_reservas);
+
+if (!$resultado_reservas) {
+    die("Error en la consulta de reservas: " . mysqli_error($conexion));
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -76,7 +92,7 @@ if (!$resultado_contact) {
                         $subResult = $stmt->get_result();
 
                         while ($subHabitacion = $subResult->fetch_assoc()): ?>
-                            <div class="sub-habitacion <?php echo $subHabitacion['estado'] == 'ocupada' ? 'reservada' : ''; ?>" data-id="<?php echo $subHabitacion['id']; ?>">
+                            <div class="sub-habitacion <?php echo $subHabitacion['estado'] == 'ocupada' ? 'ocupada' : ''; ?>" data-id="<?php echo $subHabitacion['id']; ?>">
                                 <span>Habitación <?php echo $subHabitacion['id']; ?></span>
                                 <span class="estado"><?php echo $subHabitacion['estado'] == 'ocupada' ? 'Ocupada' : 'Disponible'; ?></span>
                                 <button class="btn btn-eliminar" data-id="<?php echo $subHabitacion['id']; ?>">Eliminar</button>
@@ -106,8 +122,37 @@ if (!$resultado_contact) {
 
     <section id="panel-reservas" class="container">
         <h2>Panel de Reservas</h2>
+        <form id="form-busqueda-reservas" action="#panel-reservas" method="GET">
+            <label for="search_cliente">Buscar por Cliente:</label>
+            <input type="text" id="search_cliente" name="search_cliente" value="<?php echo $search_cliente; ?>">
+
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
         <div id="lista-reservas">
-            <!-- Aquí se mostrarán las reservas -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Habitación</th>
+                        <th>Sub-Habitación</th>
+                        <th>Cantidad de Personas</th>
+                        <th>Fecha de Inicio</th>
+                        <th>Fecha de Fin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($reserva = mysqli_fetch_assoc($resultado_reservas)): ?>
+                        <tr>
+                            <td><?php echo $reserva['cliente']; ?></td>
+                            <td><?php echo $reserva['habitacion']; ?></td>
+                            <td><?php echo $reserva['sub_habitacion']; ?></td>
+                            <td><?php echo $reserva['cantidad_personas']; ?></td>
+                            <td><?php echo $reserva['fecha_inicio']; ?></td>
+                            <td><?php echo $reserva['fecha_fin']; ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
         </div>
     </section>
 
