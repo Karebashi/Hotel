@@ -9,8 +9,22 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
 
 include 'conexion_be.php';
 
+// Obtener habitaciones
 $query = "SELECT id, nombre, descripcion, precio, imagen FROM habitaciones";
 $resultado = mysqli_query($conexion, $query);
+
+// Obtener mensajes de contacto con filtros
+$search_subject = isset($_GET['search_subject']) ? $_GET['search_subject'] : '';
+$search_email = isset($_GET['search_email']) ? $_GET['search_email'] : '';
+$search_status = isset($_GET['search_status']) ? $_GET['search_status'] : '';
+
+$query_contact = "SELECT id, name, email, subject, message, resolved FROM contact_messages WHERE subject LIKE '%$search_subject%' AND email LIKE '%$search_email%'";
+
+if ($search_status !== '') {
+    $query_contact .= " AND resolved = " . ($search_status === 'resuelto' ? '1' : '0');
+}
+
+$resultado_contact = mysqli_query($conexion, $query_contact);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -31,6 +45,7 @@ $resultado = mysqli_query($conexion, $query);
                 <ul>
                     <li><a href="#gestion-habitaciones">Gestión de Habitaciones</a></li>
                     <li><a href="#panel-reservas">Panel de Reservas</a></li>
+                    <li><a href="#correos-contacto">Correos de Contacto</a></li>
                     <li><a href="logout.php">Cerrar sesión</a></li>
                 </ul>
             </nav>
@@ -88,6 +103,41 @@ $resultado = mysqli_query($conexion, $query);
         <h2>Panel de Reservas</h2>
         <div id="lista-reservas">
             <!-- Aquí se mostrarán las reservas -->
+        </div>
+    </section>
+
+    <section id="correos-contacto" class="container">
+        <h2>Correos de Contacto</h2>
+        <form id="form-busqueda" action="#correos-contacto" method="GET">
+            <label for="search_subject">Buscar por Asunto:</label>
+            <input type="text" id="search_subject" name="search_subject" value="<?php echo $search_subject; ?>">
+
+            <label for="search_email">Buscar por Email:</label>
+            <input type="email" id="search_email" name="search_email" value="<?php echo $search_email; ?>">
+
+            <label for="search_status">Buscar por Estado:</label>
+            <select id="search_status" name="search_status">
+                <option value="">Todos</option>
+                <option value="resuelto" <?php if ($search_status === 'resuelto') echo 'selected'; ?>>Resuelto</option>
+                <option value="no_resuelto" <?php if ($search_status === 'no_resuelto') echo 'selected'; ?>>No Resuelto</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+        <div id="lista-correos">
+            <?php while ($contact = mysqli_fetch_assoc($resultado_contact)): ?>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <p class="card-text"><strong>Asunto:</strong> <?php echo $contact['subject']; ?></p>
+                        <p class="card-text"><strong>Nombre:</strong> <?php echo $contact['name']; ?></p>
+                        <p class="card-text"><strong>Email:</strong> <?php echo $contact['email']; ?></p>
+                        <p class="card-text"><strong>Mensaje:</strong> <?php echo $contact['message']; ?></p>
+                        <p class="card-text"><strong>Estado:</strong> <?php echo $contact['resolved'] ? 'Resuelto' : 'No resuelto'; ?></p>
+                        <button class="btn btn-resuelto" onclick="marcarResuelto(<?php echo $contact['id']; ?>)">Marcar como Resuelto</button>
+                        <button class="btn btn-no-resuelto" onclick="marcarNoResuelto(<?php echo $contact['id']; ?>)">Marcar como No Resuelto</button>
+                    </div>
+                </div>
+            <?php endwhile; ?>
         </div>
     </section>
 
@@ -162,6 +212,32 @@ $resultado = mysqli_query($conexion, $query);
                     console.error("Error al eliminar la habitación:", error);
                 });
             }
+        }
+
+        function marcarResuelto(id) {
+            actualizarEstadoMensaje(id, true);
+        }
+
+        function marcarNoResuelto(id) {
+            actualizarEstadoMensaje(id, false);
+        }
+
+        function actualizarEstadoMensaje(id, resuelto) {
+            fetch("actualizar_estado_mensaje.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `id=${id}&resuelto=${resuelto}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                location.reload();
+            })
+            .catch(error => {
+                console.error("Error al actualizar el estado del mensaje:", error);
+            });
         }
     </script>
 </body>

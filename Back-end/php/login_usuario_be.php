@@ -20,7 +20,7 @@ if (mysqli_num_rows($resultado) > 0) {
         header("Location: admin.php"); 
         exit();
     } elseif ($usuario['rol'] == 2) {
-        header("Location: ../../Vistas/html/index.html"); 
+        header("Location: ../../Vistas/html/index.php"); 
         exit();
     } else {
         echo '<script>

@@ -1,37 +1,31 @@
 <?php
 include 'conexion_be.php';
 
+<<<<<<< HEAD
 $nombre = $_POST['nombre']; 
 $precio = $_POST['precio'];
 $descripcion = $_POST['descripcion'];
 $imagenes = $_FILES['imagenes'];
+=======
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $tipo = htmlspecialchars($_POST['tipo']);
+    $precio = htmlspecialchars($_POST['precio']);
+    $descripcion = htmlspecialchars($_POST['descripcion']);
+>>>>>>> be38eba66e1ba706be1f07b1555c8320f2a33173
 
-// Directorio donde se guardarán las imágenes
-$target_dir = "../../images/";
+    // Manejar la subida de la imagen
+    $imagen = $_FILES['imagen']['tmp_name'];
+    $imagenContenido = addslashes(file_get_contents($imagen));
 
-// Array para almacenar los nombres de las imágenes
-$imagenes_guardadas = [];
-
-// Subir cada imagen
-foreach ($imagenes['name'] as $key => $imagen) {
-    $target_file = $target_dir . basename($imagen);
-    if (move_uploaded_file($imagenes['tmp_name'][$key], $target_file)) {
-        $imagenes_guardadas[] = $imagen;
+    // Guardar los datos en la base de datos
+    $stmt = $conexion->prepare("INSERT INTO habitaciones (nombre, descripcion, precio, imagen) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssis", $tipo, $descripcion, $precio, $imagenContenido);
+    if ($stmt->execute()) {
+        header("Location: admin.php?status=success");
     } else {
-        echo "Error al subir la imagen: " . $imagen;
-        exit();
+        echo "Error: " . $stmt->error;
     }
-}
-
-// Convertir el array de imágenes a una cadena separada por comas
-$imagenes_guardadas_str = implode(',', $imagenes_guardadas);
-
-// Insertar la información de la habitación en la base de datos
-$query = "INSERT INTO habitaciones (nombre, descripcion, precio, imagen) VALUES ('$nombre', '$descripcion', '$precio', '$imagenes_guardadas_str')";
-if (mysqli_query($conexion, $query)) {
-    echo "Habitación guardada correctamente.";
-} else {
-    echo "Error: " . $query . "<br>" . mysqli_error($conexion);
+    $stmt->close();
 }
 
 mysqli_close($conexion);

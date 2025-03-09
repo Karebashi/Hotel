@@ -1,3 +1,8 @@
+<?php
+session_start();
+$isClient = isset($_SESSION['rol']) && $_SESSION['rol'] == 2;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,12 +23,16 @@
             <h1><i class="fa-solid fa-water"></i> Hotel AquaMar Resort </h1>
             <nav>
                 <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="about.html">Nosotros</a></li>
-                    <li><a href="services.html">Servicios</a></li>
-                    <li><a href="habitaciones.html">Habitaciones</a></li>
-                    <li><a href="contact.html">Contacto</a></li>
-                    <li><a href="login.html">Iniciar Sesión</a></li>
+                    <li><a href="index.php">Inicio</a></li>
+                    <li><a href="about.php">Nosotros</a></li>
+                    <li><a href="services.php">Servicios</a></li>
+                    <li><a href="habitaciones.php">Habitaciones</a></li>
+                    <li><a href="contact.php">Contacto</a></li>
+                    <?php if ($isClient): ?>
+                        <li><a href="../../Back-end/php/logout.php">Cerrar Sesión</a></li>
+                    <?php else: ?>
+                        <li><a href="login.html">Iniciar Sesión</a></li>
+                    <?php endif; ?>
                 </ul>
             </nav>
         </div>
