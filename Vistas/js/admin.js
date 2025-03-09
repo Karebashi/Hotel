@@ -4,31 +4,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const listaReservas = document.getElementById('lista-reservas');
 
     const habitaciones = {
-        estandar: {
+        sencilla : {
             precio: 150,
-            descripcion: 'hola'
+            descripcion: 'Una elegante habitación con cama King, diseñada para ofrecer comodidad y sofisticación. Está equipada con aire acondicionado, Wi-Fi, TV de pantalla plana, minibar y servicio de desayuno en la habitación. Perfecta para viajeros de negocios o parejas que buscan una estancia placentera.'
+        },
+        doble: {
+            precio: 220,
+            descripcion: 'Habitación cómoda y luminosa con una cama doble y una individual, ideal para hasta cuatro personas. Equipada con aire acondicionado, ropa de cama de calidad y decoración elegante con detalles florales.'
         },
         deluxe: {
-            precio: 220,
-            descripcion: 'Disfruta de una hermosa vista al océano desde tu balcón privado. La habitación cuenta con una cama King, área de descanso, baño de lujo con jacuzzi, minibar y servicio a la habitación 24/7.'
-        },
-        junior: {
             precio: 320,
-            descripcion: 'Un espacio amplio y elegante con sala de estar, terraza privada con vista al mar, cama King, jacuzzi y acceso a zona VIP en la playa. Incluye desayuno buffet y traslado gratuito desde el aeropuerto.'
+            descripcion: 'Amplia y cómoda habitación ideal para familias o grupos. Cuenta con dos camas dobles y dos individuales, con capacidad para hasta seis personas. Equipada con aire acondicionado, ropa de cama premium y grandes ventanales que brindan luz natural. Su decoración elegante y detalles florales crean un ambiente acogedor.'
         },
-        presidencial: {
+        confort: {
             precio: 550,
-            descripcion: 'La máxima experiencia de lujo. Amplia suite de dos habitaciones con vistas panorámicas, terraza con piscina privada, baño con jacuzzi, sala de estar con bar privado y mayordomo personal.'
+            descripcion: 'Moderna y acogedora, ideal para parejas o viajeros. Cuenta con una cama doble, escritorio elegante y una pantalla plana. La luz natural fluye a través de amplias ventanas con cortinas traslúcidas, brindando un ambiente cálido y relajante. Equipada con aire acondicionado y ropa de cama de alta calidad.'
         },
-        bungalow: {
-            precio: 700,
-            descripcion: 'Un exclusivo bungalow de lujo sobre la arena, con acceso directo a la playa, piscina privada, terraza con hamacas, cocina equipada, baño de mármol y servicio de chef privado.'
-        }
     };
 
     document.getElementById('tipo').addEventListener('change', function() {
         const tipo = this.value;
         if (tipo && habitaciones[tipo]) {
+            document.getElementById('nombre').value = tipo;
             document.getElementById('precio').value = habitaciones[tipo].precio;
             document.getElementById('descripcion').value = habitaciones[tipo].descripcion;
         } else {

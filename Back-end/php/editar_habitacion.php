@@ -2,7 +2,7 @@
 include 'conexion_be.php';
 
 $id = $_POST['id'];
-$nombre = $_POST['tipo'];
+$nombre = $_POST['nombre'];
 $precio = $_POST['precio'];
 $descripcion = $_POST['descripcion'];
 $imagenes = isset($_FILES['imagenes']) ? implode(',', $_FILES['imagenes']['name']) : '';

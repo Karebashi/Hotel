@@ -1,10 +1,17 @@
 <?php
 include 'conexion_be.php';
 
+<<<<<<< HEAD
+$nombre = $_POST['nombre']; 
+$precio = $_POST['precio'];
+$descripcion = $_POST['descripcion'];
+$imagenes = $_FILES['imagenes'];
+=======
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tipo = htmlspecialchars($_POST['tipo']);
     $precio = htmlspecialchars($_POST['precio']);
     $descripcion = htmlspecialchars($_POST['descripcion']);
+>>>>>>> be38eba66e1ba706be1f07b1555c8320f2a33173
 
     // Manejar la subida de la imagen
     $imagen = $_FILES['imagen']['tmp_name'];
