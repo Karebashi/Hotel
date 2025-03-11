@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = ""; // Asegúrate de que esta línea contenga la contraseña correcta si la hay
 $dbname = "hotel";
 
 // Crear conexión
