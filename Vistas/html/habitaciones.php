@@ -57,18 +57,19 @@ $clientName = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
                 while ($habitacion = mysqli_fetch_assoc($resultado)): ?>
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($habitacion['imagen']); ?>" class="card-img-top" alt="<?php echo $habitacion['nombre']; ?>">
+                            <img src="../../<?php echo htmlspecialchars($habitacion['imagen']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($habitacion['nombre']); ?>">
                             <div class="card-body">
-                                <h5 class="card-title"><?php echo $habitacion['nombre']; ?></h5>
-                                <p class="card-text"><?php echo $habitacion['descripcion']; ?></p>
-                                <p class="card-text">Precio: $<?php echo $habitacion['precio']; ?></p>
+                                <h5 class="card-title"><?php echo htmlspecialchars($habitacion['nombre']); ?></h5>
+                                <p class="card-text"><?php echo htmlspecialchars($habitacion['descripcion']); ?></p>
+                                <p class="card-text">Precio: $<?php echo htmlspecialchars($habitacion['precio']); ?></p>
                                 <?php if ($isClient): ?>
-                                    <button class="btn btn-primary" onclick="mostrarFormularioReserva(<?php echo $habitacion['id']; ?>, '<?php echo $habitacion['nombre']; ?>', '<?php echo $habitacion['descripcion']; ?>', '<?php echo base64_encode($habitacion['imagen']); ?>', <?php echo $habitacion['precio']; ?>)">Reservar</button>
+                                    <button class="btn btn-primary" onclick="mostrarFormularioReserva(<?php echo $habitacion['id']; ?>, '<?php echo htmlspecialchars($habitacion['nombre']); ?>', '<?php echo htmlspecialchars($habitacion['descripcion']); ?>', '<?php echo htmlspecialchars($habitacion['imagen']); ?>', <?php echo $habitacion['precio']; ?>)">Reservar</button>
                                 <?php endif; ?>
                             </div>
                         </div>
                     </div>
                 <?php endwhile; ?>
+                <?php mysqli_close($conexion); ?>
             </div>
         </div>
     </section>

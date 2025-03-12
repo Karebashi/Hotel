@@ -2,25 +2,19 @@
 include 'conexion_be.php';
 
 $imagenes = [
-    'doble_adicional.jpg',
-    'doble_confort.jpg',
-    'ejecutiva.jpg',
-    'familiar_deluxe.jpg',
-    
+    1 => 'habitaciones/ejecutiva.jpg',
+    2 => 'habitaciones/doble_adicional.jpg',
+    3 => 'habitaciones/familiar_deluxe.jpg',
+    4 => 'habitaciones/doble_confort.jpg'
 ];
 
-foreach ($imagenes as $imagen) {
-    $nombre = pathinfo($imagen, PATHINFO_FILENAME);
-    $descripcion = "Descripción de la habitación $nombre";
-    $precio = rand(100, 300); // Precio aleatorio para el ejemplo
-    $ruta_imagen = "../../images/habitaciones/$imagen";
-    $imagen_base64 = base64_encode(file_get_contents($ruta_imagen));
-
-    $query = "UPDATE habitaciones SET imagen = '$imagen_base64' WHERE nombre = '$nombre'";
+foreach ($imagenes as $id => $ruta_imagen) {
+    $ruta_completa = "images/$ruta_imagen"; // Ajusta la ruta según sea necesario
+    $query = "UPDATE habitaciones SET imagen = '$ruta_completa' WHERE id = $id";
     if (mysqli_query($conexion, $query)) {
-        echo "Imagen de la habitación $nombre guardada correctamente.<br>";
+        echo "Imagen de la habitación con ID $id guardada correctamente.<br>";
     } else {
-        echo "Error al guardar la imagen de la habitación $nombre: " . mysqli_error($conexion) . "<br>";
+        echo "Error al guardar la imagen de la habitación con ID $id: " . mysqli_error($conexion) . "<br>";
     }
 }
 
