@@ -2,7 +2,7 @@ function mostrarFormularioReserva(habitacionId, nombre, descripcion, imagen, pre
     document.getElementById('habitacion-id').value = habitacionId;
     document.getElementById('vista-previa-nombre').innerText = nombre;
     document.getElementById('vista-previa-descripcion').innerText = descripcion;
-    document.getElementById('vista-previa-imagen').src = 'data:image/jpeg;base64,' + imagen;
+    document.getElementById('vista-previa-imagen').src = '../../' + imagen; // Ajuste aquí
     document.getElementById('vista-previa-precio').innerText = 'Precio: $' + precio;
     document.getElementById('formulario-reserva').style.display = 'block';
 
