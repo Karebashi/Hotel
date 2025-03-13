@@ -44,7 +44,6 @@ function seleccionarSubHabitacion(element) {
     element.classList.add('reservada');
     document.getElementById('sub-habitacion-id').value = element.getAttribute('data-id');
 }
-
 document.addEventListener('DOMContentLoaded', () => {
     const formReserva = document.getElementById('form-reserva');
     formReserva.addEventListener('submit', (e) => {
@@ -54,13 +53,37 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'POST',
             body: formData
         })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            alert(data);
-            cerrarFormularioReserva();
+            if (data.error) {
+                mostrarError(data.error, data.options);
+            } else if (data.success) {
+                alert(data.success);
+                cerrarFormularioReserva();
+            }
         })
         .catch(error => {
             console.error('Error al realizar la reserva:', error);
         });
     });
 });
+
+function mostrarError(mensaje, opciones) {
+    const errorContainer = document.getElementById('error-container');
+    errorContainer.innerHTML = `<p>${mensaje}</p>`;
+    if (opciones) {
+        const listaOpciones = document.createElement('ul');
+        opciones.forEach(opcion => {
+            const item = document.createElement('li');
+            item.textContent = opcion;
+            listaOpciones.appendChild(item);
+        });
+        errorContainer.appendChild(listaOpciones);
+    }
+    errorContainer.style.display = 'block';
+}
+
+function cerrarFormularioReserva() {
+    document.getElementById('formulario-reserva').style.display = 'none';
+    document.getElementById('error-container').style.display = 'none';
+}

@@ -2,12 +2,16 @@
 session_start();
 include 'conexion_be.php';
 
+header('Content-Type: application/json');
+
 if (!isset($_SESSION['id'])) {
-    die("Error: Usuario no autenticado.");
+    echo json_encode(['error' => 'Usuario no autenticado.']);
+    exit();
 }
 
 if (!isset($_POST['habitacion_id'], $_POST['sub_habitacion_id'], $_POST['fecha_inicio'], $_POST['fecha_fin'], $_POST['cantidad_personas'])) {
-    die("Error: Faltan datos en el formulario.");
+    echo json_encode(['error' => 'Faltan datos en el formulario.']);
+    exit();
 }
 
 $habitacion_id = $_POST['habitacion_id'];
@@ -34,16 +38,16 @@ if ($cantidad_personas > $capacidad) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    $options = "";
+    $options = [];
     while ($row = $result->fetch_assoc()) {
-        $options .= "ID: " . $row['id'] . " - Capacidad: " . $row['capacidad'] . "\\n";
+        $options[] = "ID: " . $row['id'] . " - Capacidad: " . $row['capacidad'];
     }
     $stmt->close();
 
     if ($options) {
-        echo "<script>alert('Error: La cantidad de personas excede la capacidad de la sub-habitación seleccionada.\\nSub-habitaciones disponibles:\\n$options'); window.history.back();</script>";
+        echo json_encode(['error' => 'La cantidad de personas excede la capacidad de la sub-habitación seleccionada, prueba con las siguientes opciones si deseas:', 'options' => $options]);
     } else {
-        echo "<script>alert('Error: No hay sub-habitaciones disponibles con suficiente capacidad.'); window.history.back();</script>";
+        echo json_encode(['error' => 'No hay sub-habitaciones disponibles con suficiente capacidad, prueba con estas.']);
     }
     exit();
 }
@@ -56,7 +60,7 @@ $stmt->execute();
 $stmt->store_result();
 
 if ($stmt->num_rows > 0) {
-    echo "<script>alert('Error: La sub-habitación ya está ocupada.'); window.history.back();</script>";
+    echo json_encode(['error' => 'La sub-habitación ya está ocupada.']);
     exit();
 }
 $stmt->close();
@@ -74,12 +78,11 @@ if ($stmt->execute()) {
     $updateStmt->execute();
     $updateStmt->close();
 
-    echo "<script>alert('Reserva realizada correctamente.'); window.location.href = 'pagina_de_confirmacion.php';</script>";
+    echo json_encode(['success' => 'Reserva realizada correctamente.']);
 } else {
-    echo "<script>alert('Error al realizar la reserva: " . $stmt->error . "'); window.history.back();</script>";
+    echo json_encode(['error' => 'Error al realizar la reserva: ' . $stmt->error]);
 }
 
 $stmt->close();
 $conexion->close();
 ?>
-    

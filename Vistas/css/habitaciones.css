@@ -11,6 +11,10 @@ header {
     padding: 20px 0;
 }
 
+.habitaciones h2 {
+    margin-top: 20px; /* Ajusta el valor según sea necesario */
+}
+
 header .container {
     display: flex;
     justify-content: space-between;
@@ -152,6 +156,19 @@ nav ul li a:hover::after {
 .sub-habitacion.reservada .estado {
     color: white;
 }
+
+#error-container {
+    display: none;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 20px; /* Separar el mensaje de error del formulario */
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-top: 10px; /* Separar el mensaje de error del formulario */
+}
+
+
 
 footer {
     background-color: #004aad;

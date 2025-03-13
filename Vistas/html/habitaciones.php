@@ -22,20 +22,12 @@ $clientName = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
         <div class="container">
             <h1><i class="fa-solid fa-water"></i> Hotel AquaMar Resort </h1>
             <nav>
-                <ul>
+            <ul>
                     <li><a href="index.php">Inicio</a></li>
                     <li><a href="about.php">Nosotros</a></li>
                     <li><a href="services.php">Servicios</a></li>
                     <li><a href="habitaciones.php">Habitaciones</a></li>
                     <li><a href="contact.php">Contacto</a></li>
-                    <?php if ($isClient): ?>
-                        <li><a href="../../Back-end/php/logout.php">Cerrar Sesión</a></li>
-                    <?php else: ?>
-                        <li><a href="login.html">Iniciar Sesión</a></li>
-                    <?php endif; ?>
-                </ul>
-            </nav>
-        </div>
     </header>
 
     <section class="habitaciones">
@@ -92,6 +84,10 @@ $clientName = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
             <form id="form-reserva" action="../../Back-end/php/reservar_habitacion.php" method="POST">
                 <input type="hidden" id="habitacion-id" name="habitacion_id">
                 <input type="hidden" id="sub-habitacion-id" name="sub_habitacion_id">
+                
+                <div id="error-container" style="display: none; background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; border: 1px solid #f5c6cb; border-radius: 5px; margin-top: 10px;">
+                </div>
+                
                 <div class="form-group">
                     <label for="fecha-inicio">Fecha de Inicio:</label>
                     <input type="date" id="fecha-inicio" name="fecha_inicio" required>
