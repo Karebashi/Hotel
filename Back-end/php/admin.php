@@ -36,7 +36,7 @@ if (!$resultado_contact) {
 // Obtener reservas con filtro por cliente
 $search_cliente = isset($_GET['search_cliente']) ? $_GET['search_cliente'] : '';
 
-$query_reservas = "SELECT r.id, u.nombre_completo AS cliente, h.nombre AS habitacion, s.id AS sub_habitacion, r.cantidad_personas, r.fecha_inicio, r.fecha_fin 
+$query_reservas = "SELECT r.id, u.nombre_completo AS cliente, h.nombre AS habitacion, s.id AS sub_habitacion, r.cantidad_personas, r.fecha_inicio, r.fecha_fin, r.estado 
                    FROM reservas r 
                    JOIN usuarios u ON r.usuario_id = u.id 
                    JOIN habitaciones h ON r.habitacion_id = h.id 
@@ -103,7 +103,6 @@ if (!$resultado_reservas) {
             <?php endwhile; ?>
         </div>
     </section>
-
     <section id="agregar-sub-habitacion" class="container">
         <h2>Agregar Sub-Habitación</h2>
         <form id="form-agregar-sub-habitacion" action="agregar_sub_habitacion.php" method="POST" class="form-agregar-sub-habitacion">
@@ -138,6 +137,7 @@ if (!$resultado_reservas) {
                         <th>Cantidad de Personas</th>
                         <th>Fecha de Inicio</th>
                         <th>Fecha de Fin</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -149,6 +149,7 @@ if (!$resultado_reservas) {
                             <td><?php echo $reserva['cantidad_personas']; ?></td>
                             <td><?php echo $reserva['fecha_inicio']; ?></td>
                             <td><?php echo $reserva['fecha_fin']; ?></td>
+                            <td><?php echo $reserva['estado']; ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>

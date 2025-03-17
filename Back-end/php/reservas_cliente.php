@@ -11,7 +11,7 @@ include '../../Back-end/php/conexion_be.php';
 $usuario_id = $_SESSION['id'];
 
 // Obtener reservas del cliente
-$query_reservas = "SELECT r.id, h.nombre AS habitacion, s.id AS sub_habitacion, r.cantidad_personas, r.fecha_inicio, r.fecha_fin 
+$query_reservas = "SELECT r.id, h.nombre AS habitacion, s.id AS sub_habitacion, r.cantidad_personas, r.fecha_inicio, r.fecha_fin, r.estado 
                    FROM reservas r 
                    JOIN habitaciones h ON r.habitacion_id = h.id 
                    JOIN sub_habitaciones s ON r.sub_habitacion_id = s.id 
@@ -59,6 +59,7 @@ $resultado_reservas = $stmt->get_result();
                         <th>Cantidad de Personas</th>
                         <th>Fecha de Inicio</th>
                         <th>Fecha de Fin</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -70,9 +71,21 @@ $resultado_reservas = $stmt->get_result();
                             <td><?php echo $reserva['cantidad_personas']; ?></td>
                             <td><?php echo $reserva['fecha_inicio']; ?></td>
                             <td><?php echo $reserva['fecha_fin']; ?></td>
+                            <td><?php echo $reserva['estado']; ?></td>
                             <td>
-                                <button class="btn btn-cancelar" data-id="<?php echo $reserva['id']; ?>">Cancelar</button>
+                                <?php if ($reserva['estado'] == 'activa'): ?>
+                                    <button class="btn btn-cancelar" data-id="<?php echo $reserva['id']; ?>">Cancelar</button>
+                                <?php endif; ?>
+                                <?php if ($reserva['estado_pago'] == 'pendiente'): ?>
+                                    <form action="procesar_pago.php" method="POST">
+                                        <input type="hidden" name="reserva_id" value="<?php echo $reserva['id']; ?>">
+                                        <button type="submit" class="btn btn-pagar">Pagar</button>
+                                    </form>
+                                <?php else: ?>
+                                    <span>Pagado</span>
+                                <?php endif; ?>
                             </td>
+
                         </tr>
                     <?php endwhile; ?>
                 </tbody>

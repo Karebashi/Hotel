@@ -19,7 +19,7 @@ $isClient = isset($_SESSION['rol']) && $_SESSION['rol'] == 2;
 </head>
 <body>
     <header>
-        <div class="container">
+    <div class="container">
             <h1><i class="fa-solid fa-water"></i> Hotel AquaMar Resort </h1>
             <nav>
                 <ul>
@@ -29,6 +29,7 @@ $isClient = isset($_SESSION['rol']) && $_SESSION['rol'] == 2;
                     <li><a href="habitaciones.php">Habitaciones</a></li>
                     <li><a href="contact.php">Contacto</a></li>
                     <?php if ($isClient): ?>
+                        <li><a href="mis_reservas.php">Mis Reservas</a></li>
                         <li><a href="../../Back-end/php/logout.php">Cerrar Sesión</a></li>
                     <?php else: ?>
                         <li><a href="login.html">Iniciar Sesión</a></li>
@@ -83,6 +84,16 @@ $isClient = isset($_SESSION['rol']) && $_SESSION['rol'] == 2;
     <section class="services">
         <div class="container">
             <h2>Nuestros Servicios</h2>
+            <ul>
+                <li><i class="fas fa-swimming-pool"></i> Piscina</li>
+                <li><i class="fas fa-spa"></i> Spa</li>
+                <li><i class="fas fa-utensils"></i> Restaurante</li>
+                <li><i class="fas fa-dumbbell"></i> Gimnasio</li>
+                <li><i class="fas fa-dice"></i> Casino</li>
+                <li><i class="fas fa-wifi"></i> Wi-Fi Gratis</li>
+                <li><i class="fas fa-tv"></i> TV Satelital</li>
+                <li><i class="fas fa-ellipsis-h"></i> </li> 
+            </ul>
             <nav>
     <ul>
         <li><a href="index.php">Inicio</a></li>

@@ -18,16 +18,25 @@ $clientName = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <header>
-        <div class="container">
+<header>
+    <div class="container">
             <h1><i class="fa-solid fa-water"></i> Hotel AquaMar Resort </h1>
             <nav>
-            <ul>
+                <ul>
                     <li><a href="index.php">Inicio</a></li>
                     <li><a href="about.php">Nosotros</a></li>
                     <li><a href="services.php">Servicios</a></li>
                     <li><a href="habitaciones.php">Habitaciones</a></li>
                     <li><a href="contact.php">Contacto</a></li>
+                    <?php if ($isClient): ?>
+                        <li><a href="mis_reservas.php">Mis Reservas</a></li>
+                        <li><a href="../../Back-end/php/logout.php">Cerrar Sesión</a></li>
+                    <?php else: ?>
+                        <li><a href="login.html">Iniciar Sesión</a></li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <section class="habitaciones">
