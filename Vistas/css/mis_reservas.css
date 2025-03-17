@@ -88,6 +88,14 @@ th {
     background-color: #003a8c;
 }
 
+.btn-cancelar {
+    margin-right: 10px; /* Ajusta el valor según sea necesario */
+}
+
+.btn-pagar {
+    margin-left: 10px; /* Ajusta el valor según sea necesario */
+}
+
 footer {
     background-color: #004aad;
     color: white;

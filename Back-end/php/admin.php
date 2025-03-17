@@ -36,7 +36,7 @@ if (!$resultado_contact) {
 // Obtener reservas con filtro por cliente
 $search_cliente = isset($_GET['search_cliente']) ? $_GET['search_cliente'] : '';
 
-$query_reservas = "SELECT r.id, u.nombre_completo AS cliente, h.nombre AS habitacion, s.id AS sub_habitacion, r.cantidad_personas, r.fecha_inicio, r.fecha_fin, r.estado 
+$query_reservas = "SELECT r.id, u.nombre_completo AS cliente, h.nombre AS habitacion, s.id AS sub_habitacion, r.cantidad_personas, r.fecha_inicio, r.fecha_fin, r.estado, r.estado_pago 
                    FROM reservas r 
                    JOIN usuarios u ON r.usuario_id = u.id 
                    JOIN habitaciones h ON r.habitacion_id = h.id 
@@ -48,6 +48,7 @@ $resultado_reservas = mysqli_query($conexion, $query_reservas);
 if (!$resultado_reservas) {
     die("Error en la consulta de reservas: " . mysqli_error($conexion));
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -138,6 +139,7 @@ if (!$resultado_reservas) {
                         <th>Fecha de Inicio</th>
                         <th>Fecha de Fin</th>
                         <th>Estado</th>
+                        <th>Estado de Pago</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -150,6 +152,7 @@ if (!$resultado_reservas) {
                             <td><?php echo $reserva['fecha_inicio']; ?></td>
                             <td><?php echo $reserva['fecha_fin']; ?></td>
                             <td><?php echo $reserva['estado']; ?></td>
+                            <td><?php echo $reserva['estado_pago']; ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>

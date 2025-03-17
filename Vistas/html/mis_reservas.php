@@ -2,13 +2,12 @@
 session_start();
 $isClient = isset($_SESSION['rol']) && $_SESSION['rol'] == 2;
 
-
 include '../../Back-end/php/conexion_be.php';
 
 $usuario_id = $_SESSION['id'];
 
 // Obtener reservas del cliente
-$query_reservas = "SELECT r.id, h.nombre AS habitacion, s.id AS sub_habitacion, r.cantidad_personas, r.fecha_inicio, r.fecha_fin, r.estado 
+$query_reservas = "SELECT r.id, h.nombre AS habitacion, s.id AS sub_habitacion, r.cantidad_personas, r.fecha_inicio, r.fecha_fin, r.estado, r.estado_pago 
                    FROM reservas r 
                    JOIN habitaciones h ON r.habitacion_id = h.id 
                    JOIN sub_habitaciones s ON r.sub_habitacion_id = s.id 
@@ -28,7 +27,6 @@ $resultado_reservas = $stmt->get_result();
     <link rel="stylesheet" href="../css/mis_reservas.css">
     <script src="../js/reservas_cliente.js"></script>
     <script src="https://kit.fontawesome.com/9540a64b47.js" crossorigin="anonymous"></script>
-
 </head>
 <body>
 <header>
@@ -68,21 +66,31 @@ $resultado_reservas = $stmt->get_result();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($reserva = $resultado_reservas->fetch_assoc()): ?>
-                        <tr>
-                            <td><?php echo $reserva['habitacion']; ?></td>
-                            <td><?php echo $reserva['sub_habitacion']; ?></td>
-                            <td><?php echo $reserva['cantidad_personas']; ?></td>
-                            <td><?php echo $reserva['fecha_inicio']; ?></td>
-                            <td><?php echo $reserva['fecha_fin']; ?></td>
-                            <td><?php echo $reserva['estado']; ?></td>
-                            <td>
-                                <?php if ($reserva['estado'] == 'activa'): ?>
-                                    <button class="btn btn-cancelar" data-id="<?php echo $reserva['id']; ?>">Cancelar</button>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
+                <?php while ($reserva = $resultado_reservas->fetch_assoc()): ?>
+    <tr>
+        <td><?php echo $reserva['habitacion']; ?></td>
+        <td><?php echo $reserva['sub_habitacion']; ?></td>
+        <td><?php echo $reserva['cantidad_personas']; ?></td>
+        <td><?php echo $reserva['fecha_inicio']; ?></td>
+        <td><?php echo $reserva['fecha_fin']; ?></td>
+        <td><?php echo $reserva['estado']; ?></td>
+        <td>
+            <?php if ($reserva['estado'] == 'activa'): ?>
+                <button class="btn btn-cancelar" data-id="<?php echo $reserva['id']; ?>">Cancelar</button>
+            <?php endif; ?>
+            <?php if ($reserva['estado_pago'] == 'pendiente' && $reserva['estado'] != 'cancelada'): ?>
+                <form action="../../Back-end/php/procesar_pago.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="reserva_id" value="<?php echo $reserva['id']; ?>">
+                    <button type="submit" class="btn btn-pagar">Pagar</button>
+                </form>
+            <?php elseif ($reserva['estado_pago'] == 'pagado'): ?>
+                <span>Pagado</span>
+            <?php elseif ($reserva['estado_pago'] == 'cancelada'): ?>
+                <span>Cancelada</span>
+            <?php endif; ?>
+        </td>
+    </tr>
+<?php endwhile; ?>
                 </tbody>
             </table>
         </div>
