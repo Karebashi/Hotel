@@ -35,6 +35,8 @@ if (!$resultado_contact) {
 
 // Obtener reservas con filtro por cliente
 $search_cliente = isset($_GET['search_cliente']) ? $_GET['search_cliente'] : '';
+$search_estado_pago = isset($_GET['search_estado_pago']) ? $_GET['search_estado_pago'] : '';
+$search_estado_reserva = isset($_GET['search_estado_reserva']) ? $_GET['search_estado_reserva'] : '';
 
 $query_reservas = "SELECT r.id, u.nombre_completo AS cliente, h.nombre AS habitacion, s.id AS sub_habitacion, r.cantidad_personas, r.fecha_inicio, r.fecha_fin, r.estado, r.estado_pago 
                    FROM reservas r 
@@ -42,6 +44,20 @@ $query_reservas = "SELECT r.id, u.nombre_completo AS cliente, h.nombre AS habita
                    JOIN habitaciones h ON r.habitacion_id = h.id 
                    JOIN sub_habitaciones s ON r.sub_habitacion_id = s.id 
                    WHERE u.nombre_completo LIKE '%$search_cliente%'";
+
+if ($search_estado_reserva !== '') {
+    $query_reservas .= " AND r.estado = '$search_estado_reserva'";
+}
+
+if ($search_estado_pago !== '') {
+    $query_reservas .= " AND r.estado_pago = '$search_estado_pago'";
+}
+
+$resultado_reservas = mysqli_query($conexion, $query_reservas);
+
+if (!$resultado_reservas) {
+    die("Error en la consulta de reservas: " . mysqli_error($conexion));
+}
 
 $resultado_reservas = mysqli_query($conexion, $query_reservas);
 
@@ -126,6 +142,19 @@ if (!$resultado_reservas) {
             <label for="search_cliente">Buscar por Cliente:</label>
             <input type="text" id="search_cliente" name="search_cliente" value="<?php echo $search_cliente; ?>">
 
+            <label for="search_estado_reserva">Buscar por Estado de Reserva:</label>
+            <select id="search_estado_reserva" name="search_estado_reserva">
+                <option value="">Todos</option>
+                <option value="activa" <?php if ($search_estado_reserva === 'activa') echo 'selected'; ?>>Activa</option>
+                <option value="cancelada" <?php if ($search_estado_reserva === 'cancelada') echo 'selected'; ?>>Cancelada</option>
+            </select>
+
+            <label for="search_estado_pago">Buscar por Estado de Pago:</label>
+            <select id="search_estado_pago" name="search_estado_pago">
+                <option value="">Todos</option>
+                <option value="pendiente" <?php if ($search_estado_pago === 'pendiente') echo 'selected'; ?>>Pendiente</option>
+                <option value="pagado" <?php if ($search_estado_pago === 'pagado') echo 'selected'; ?>>Pagado</option>
+            </select>
             <button type="submit" class="btn btn-primary">Buscar</button>
         </form>
         <div id="lista-reservas">
